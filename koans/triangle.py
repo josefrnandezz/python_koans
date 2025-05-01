@@ -23,6 +23,12 @@ def triangle(a, b, c):
         (a != b and b != c and a != c, 'scalene')
     ]
 
+    if a <= 0 or b <= 0 or c <= 0:
+        raise TriangleError("All sides must be greater than 0")
+
+    if a + b <= c or a + c <= b or b + c <= a:
+        raise TriangleError("The sum of any two sides must be greater than the third side")
+
     for condition, triangleType in triangleTypes:
         if condition:
             return triangleType
