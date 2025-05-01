@@ -32,9 +32,45 @@ from runner.koan import *
 #
 # Your goal is to write the score method.
 
+def calculate_triple_score_for(dice):
+    if dice.count(1) >= 3:
+        return [1000, 1]
+    
+    score_for = [0, 0]
+
+    for roll in set(dice):
+        if dice.count(roll) >= 3:
+            score_for = [roll * 100, roll]
+
+    return score_for
+
+def get_subset(dice, number_to_remove):
+    result = []
+    count = 0
+    for x in dice:
+        if x == number_to_remove and count < 3:
+            count += 1
+        else:
+            result.append(x)
+    return result
+
 def score(dice):
-    # You need to write this method
-    pass
+    if len(dice) == 0:
+        return 0
+
+    triple_score, roll_with_triple_score = calculate_triple_score_for(dice)
+
+    rest_dice = get_subset(dice, roll_with_triple_score)
+
+    cumulative_score = 0
+
+    if rest_dice.count(5) <= 2:
+        cumulative_score += (rest_dice.count(5) * 50)
+
+    if rest_dice.count(1) <= 2:
+        cumulative_score += (rest_dice.count(1) * 100)
+
+    return cumulative_score + triple_score
 
 class AboutScoringProject(Koan):
     def test_score_of_an_empty_list_is_zero(self):
